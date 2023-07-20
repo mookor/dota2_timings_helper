@@ -24,15 +24,7 @@ bool songing = false;
 bool led_up = true;
 
 const int SPEAKER=11;
-int notes[] = {
- 1318, 1318, 1318, 1046, 1318, 1568, 784
-};
-int times[] = {
- 75, 150, 75, 75, 150, 300, 300,
-};
-int delays[] = {
- 75, 150, 75, 75, 150, 300, 300,
-};
+
 
 void setup() {
   
@@ -52,31 +44,13 @@ void setup() {
   pinMode(SONG_LED_PIN, OUTPUT);
 }
 
-void play_song()
+void beep()
 {
-  for (int i = 0; i < 7; i++)
-  {
-    tone(SPEAKER, notes[i]*0.2, times[i]*2);
-    delay(delays[i]*2);
-  }
- noTone(SPEAKER);
+  
+  tone(SPEAKER, 784, 1000);
+
 }
-void blink_deod(int timing)
-{
-  if (timing < 15)
-  {
-    for (int i = 0; i < 3; i++)
-    {
-      digitalWrite(LED_PIN, HIGH);
-      delay(60);
-      digitalWrite(LED_PIN, LOW);
-      delay(60);
-    }
-    digitalWrite(LED_PIN, HIGH);
-  }
-  if (timing <= 1)
-    digitalWrite(LED_PIN, LOW);
-}
+
 /**
  * Calculates the number of seconds remaining until a given moment.
  *
@@ -95,10 +69,17 @@ int get_seconds_to_moment(int time_stamp, int to_moment_sec)
   int elapsed_seconds = current_unix - time_stamp;
   int return_seconds = to_moment_sec - elapsed_seconds;
  
-  blink_deod(return_seconds);
+  if (return_seconds < 15)
+  {
+    digitalWrite(LED_PIN, HIGH);
+  }
+  else
+  {
+    digitalWrite(LED_PIN, LOW);
+  }
   if (return_seconds == 10)
     if (songing)
-      play_song();
+      beep();
   return return_seconds;
 }
 
@@ -113,7 +94,7 @@ int get_seconds_to_moment(int time_stamp, int to_moment_sec)
  */
 void draw_lotus()
 {
-  int to_lotus_sec = 3 * 60;
+  int to_lotus_sec = 0.3 * 60;
     
   int elapsed_seconds = get_seconds_to_moment(start_game_unix, to_lotus_sec);  
   int elapsed_minutes = elapsed_seconds / 60;
@@ -125,7 +106,7 @@ void draw_lotus()
   lcd.setCursor(2, 0);
   lcd.print(lcd_buffer);
   Serial.println(lcd_buffer);
-  if (elapsed_minutes == 0 && elapsed_seconds == 0)
+  if (elapsed_minutes <= 0 && elapsed_seconds <= 0)
   {
     start_game_unix =rtc.getUnix(7);
 
@@ -183,8 +164,8 @@ void torm_status()
  */
 void rosh_status()
 {
-  int max_rosh = 11 * 60;
-  int min_rosh = 8 * 60;
+  int max_rosh = 0.211 * 60;
+  int min_rosh = 0.18 * 60;
 
   
   int elapsed_seconds_max_rosh = get_seconds_to_moment(kill_rosh_unix, max_rosh); 
@@ -196,12 +177,12 @@ void rosh_status()
   int min_rosh_sec = elapsed_seconds_min_rosh % 60;
 
   char lcd_buffer[32]; // Массив для вывода
-  if (max_rosh_minute == 9 && max_rosh_sec == 59)
+  if (max_rosh_minute == 9 && max_rosh_sec <= 59)
   {
     lcd.setCursor(15, 0);
     lcd.print(" ");
   }
-  if (max_rosh_minute == 0 && max_rosh_sec == 0)
+  if (max_rosh_minute <= 0 && max_rosh_sec <= 0)
   {
     rosh_died = false;
   }
@@ -287,19 +268,9 @@ void loop() {
   // }
   if (songing)
   {
-    analogWrite(SONG_LED_PIN, led_value);
-    delay(6);
+    digitalWrite(SONG_LED_PIN, HIGH);
   }
   else  
-    analogWrite(SONG_LED_PIN, 0);
+    digitalWrite(SONG_LED_PIN, 0);
   
-  if (led_up)
-    led_value +=1;
-  else
-    led_value -=1;
-  
-  if (led_value == 255)
-    led_up = false;
-  if (led_value == 0)
-    led_up = true;
 }
