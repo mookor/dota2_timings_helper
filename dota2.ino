@@ -94,7 +94,7 @@ int get_seconds_to_moment(int time_stamp, int to_moment_sec)
  */
 void draw_lotus()
 {
-  int to_lotus_sec = 0.3 * 60;
+  int to_lotus_sec = 3 * 60;
     
   int elapsed_seconds = get_seconds_to_moment(start_game_unix, to_lotus_sec);  
   int elapsed_minutes = elapsed_seconds / 60;
@@ -164,8 +164,8 @@ void torm_status()
  */
 void rosh_status()
 {
-  int max_rosh = 0.211 * 60;
-  int min_rosh = 0.18 * 60;
+  int max_rosh = 11 * 60;
+  int min_rosh = 8 * 60;
 
   
   int elapsed_seconds_max_rosh = get_seconds_to_moment(kill_rosh_unix, max_rosh); 
