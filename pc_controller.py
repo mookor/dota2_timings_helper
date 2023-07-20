@@ -1,27 +1,3 @@
-# import serial
-# import keyboard
-
-# ser = serial.Serial('COM5', 9600)  # Замените 'COM3' на соответствующий COM порт и 9600 на скорость передачи данных, используемую на Arduino
-
-# def start_game():
-#     ser.write(b'1')
-#     #print("Start game")
-
-# def rosh_killed():
-#     ser.write(b'2')
-#     #print("rosh_killed")
-
-# def torm_killed():
-#     ser.write(b'3')
-#     #print("torm_killed")
-
-# keyboard.add_hotkey('F6', start_game)
-# keyboard.add_hotkey('F7', rosh_killed)
-# keyboard.add_hotkey('F8', torm_killed)
-# keyboard.wait('Esc')
-
-
-
 import serial
 import keyboard
 import pystray
