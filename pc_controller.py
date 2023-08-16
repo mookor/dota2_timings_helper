@@ -3,7 +3,7 @@ import keyboard
 import pystray
 from pystray import MenuItem as item
 from PIL import Image
-ser = serial.Serial('COM5', 9600)
+ser = serial.Serial('COM3', 9600)
 
 def start_game():
     try:
@@ -22,13 +22,19 @@ def torm_killed():
     except:
         pass
 
+def sound():
+    try:
+        ser.write(b'4')
+    except:
+        pass
+
 def exit_action(icon, item):
     icon.stop()
 
 def reconnect():
     global ser
     ser.close()
-    ser = serial.Serial('COM5', 9600)
+    ser = serial.Serial('COM3', 9600)
 
 menu = (
     item('Start game', start_game),
@@ -43,6 +49,7 @@ def main():
     keyboard.add_hotkey('F7', rosh_killed)
     keyboard.add_hotkey('F8', torm_killed)
     keyboard.add_hotkey('F3', reconnect)
+    keyboard.add_hotkey('F2', sound)
     image = Image.open("Kaixin-Icon_33953.png")  # Замени "icon.png" на путь к своей иконке
     icon = pystray.Icon("name", image, "Title", menu)
     icon.run()

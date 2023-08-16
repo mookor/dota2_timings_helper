@@ -255,7 +255,7 @@ void loop() {
     torm_died = true;
     kill_torm_unix = rtc.getUnix(7);
   }  
-  if (butt1.isHolded())
+  if (butt1.isHolded() || signal == '4')
   {
     Serial.println("hold");
     songing = !songing;
