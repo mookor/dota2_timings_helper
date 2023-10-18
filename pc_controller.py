@@ -3,7 +3,15 @@ import keyboard
 import pystray
 from pystray import MenuItem as item
 from PIL import Image
-ser = serial.Serial('COM3', 9600)
+
+import serial.tools.list_ports
+
+arduino_ports = [
+    p.name 
+    for p in serial.tools.list_ports.comports()
+    if "CH340" in p.description
+]
+ser = serial.Serial(arduino_ports[0], 9600)
 
 def start_game():
     try:
