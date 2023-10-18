@@ -41,8 +41,13 @@ def exit_action(icon, item):
 
 def reconnect():
     global ser
+    arduino_ports = [
+    p.name 
+    for p in serial.tools.list_ports.comports()
+    if "CH340" in p.description
+]
     ser.close()
-    ser = serial.Serial('COM3', 9600)
+    ser = serial.Serial(arduino_ports[0], 9600)
 
 menu = (
     item('Start game', start_game),
